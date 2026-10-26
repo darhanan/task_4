@@ -5,6 +5,7 @@ import kz.aitu.navigator.model.Location;
 import kz.aitu.navigator.model.Route;
 import kz.aitu.navigator.strategy.CarStrategy;
 import kz.aitu.navigator.strategy.CycleStrategy;
+import kz.aitu.navigator.strategy.PublicTransportStrategy;
 import kz.aitu.navigator.strategy.RouteStrategy;
 import kz.aitu.navigator.strategy.WalkStrategy;
 
@@ -42,6 +43,7 @@ public class Main {
         strategies.put("1", new CarStrategy());
         strategies.put("2", new WalkStrategy());
         strategies.put("3", new CycleStrategy());
+        strategies.put("4", new PublicTransportStrategy());
         return strategies;
     }
 
