@@ -1,0 +1,64 @@
+@startuml
+title Strategy Pattern - Navigator (package kz.aitu.navigator)
+
+class Main <<client>> {
+  - AITU, BAITEREK, KHAN_SHATYR : Location
+  + main(args : String[]) : void
+  - createStrategyRegistry() : Map<String, RouteStrategy>
+  - runDemo(navigator, strategies) : void
+  - runInteractiveMenu(navigator, strategies) : void
+}
+
+class Navigator <<context>> {
+  - strategy : RouteStrategy
+  + Navigator(strategy : RouteStrategy)
+  + setStrategy(strategy : RouteStrategy) : void
+  + getStrategy() : RouteStrategy
+  + planRoute(from : Location, to : Location) : Route
+}
+
+interface RouteStrategy {
+  + modeName() : String
+  + buildRoute(from : Location, to : Location) : Route
+}
+
+class CarStrategy
+class WalkStrategy
+class CycleStrategy
+class PublicTransportStrategy
+
+class Location <<record>> {
+  - name : String
+  - latitude : double
+  - longitude : double
+}
+
+class Route <<record>> {
+  - travelMode : String
+  - from : Location
+  - to : Location
+  - distanceKm : double
+  - durationMinutes : int
+  - costKzt : double
+  - description : String
+}
+
+class GeoMath <<utility>> {
+  + {static} straightLineKm(from, to) : double
+  + {static} travelMinutes(km, speedKmh) : int
+}
+
+Main --> Navigator : uses
+Main ..> CarStrategy : <<create>>
+Main ..> WalkStrategy : <<create>>
+Main ..> CycleStrategy : <<create>>
+Main ..> PublicTransportStrategy : <<create>>
+Navigator o--> "1" RouteStrategy : -strategy
+RouteStrategy <|.. CarStrategy
+RouteStrategy <|.. WalkStrategy
+RouteStrategy <|.. CycleStrategy
+RouteStrategy <|.. PublicTransportStrategy
+RouteStrategy ..> Route : <<create>>
+CarStrategy ..> GeoMath : <<use>>
+Route --> Location : from, to
+@enduml
